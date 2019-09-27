@@ -1,5 +1,5 @@
 (ns hello-graal.server
-  (:require [immutant.web :as web])
+  (:require [org.httpkit.server :as server])
   (:gen-class))
 
 
@@ -10,6 +10,4 @@
 
 
 (defn -main [& args]
-  (web/run handler {:port 8080}))
-
-(comment (-main []))
+  (server/run-server handler {:port 8080}))
