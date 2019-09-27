@@ -1,5 +1,5 @@
 (ns hello-graal.server
-  (:require [org.httpkit.server :as server])
+  (:require [aleph.http :as http])
   (:gen-class))
 
 
@@ -10,4 +10,4 @@
 
 
 (defn -main [& args]
-  (server/run-server handler {:port 8080}))
+  (http/start-server handler {:port 8080}))
