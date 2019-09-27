@@ -34,6 +34,7 @@ RUN mkdir classes && \
     native-image \
       --no-fallback \
       --initialize-at-build-time \
+      --allow-incomplete-classpath \
       --static \
       --enable-http \
       -H:+ReportUnsupportedElementsAtRuntime \

@@ -1,5 +1,5 @@
 {:paths   ["src/clj" "resources"]
  :deps    {org.clojure/clojure {:mvn/version "1.10.1"}
-           http-kit            {:mvn/version "2.3.0"}}
+           metosin/pohjavirta  {:mvn/version "0.0.1-alpha4"}}
  :aliases {:dev {:extra-paths ["src/dev"]
                  :extra-deps  {org.clojure/tools.namespace {:mvn/version "0.3.0-alpha4"}}}}}
