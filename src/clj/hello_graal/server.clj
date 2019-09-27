@@ -1,13 +1,28 @@
 (ns hello-graal.server
-  (:require [org.httpkit.server :as server])
-  (:gen-class))
+  (:gen-class)
+  (:import (com.sun.net.httpserver HttpServer HttpHandler HttpExchange)
+           (java.net InetSocketAddress)
+           (java.nio.charset StandardCharsets)))
 
 
-(defn handler [req]
-  {:status  200
-   :headers {"content-type" "text/plain"}
-   :body    "Hello!\n"})
+(defn handler ^HttpHandler []
+  (proxy [HttpHandler] []
+    (handle [^HttpExchange exchange]
+      (let [response (.getBytes "Hello!\n" StandardCharsets/UTF_8)]
+        (.sendResponseHeaders exchange 200 (count response))
+        (doto (.getResponseBody exchange)
+          (.write response)
+          (.close))))))
+
+
+(defn run-server! []
+  (let [server (HttpServer/create (InetSocketAddress. 8080) 0)]
+    (-> server
+        (.createContext "/")
+        (.setHandler (handler)))
+    (-> server
+        (.start))))
 
 
 (defn -main [& args]
-  (server/run-server handler {:port 8080}))
+  (run-server!))

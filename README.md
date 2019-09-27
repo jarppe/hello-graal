@@ -1,5 +1,8 @@
 # Simple Clojure HTTP server in 8.63MB docker image with GraalVM
 
+This branch uses `com.sun.net.httpserver/HttpServer` instead of `http-kit`. Unexpectedly the
+final image size grows to 10.9MB. 
+
 Demonstration on how to package a simple Clojure HTTP server to 8.63MB Docker image
 that starts pretty much instantly.
 
