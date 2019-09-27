@@ -1,5 +1,7 @@
 # Simple Clojure HTTP server in 8.63MB docker image with GraalVM
 
+This branch uses immutant. Unfortunately the native-image creation fails on out-of-memory error.
+
 Demonstration on how to package a simple Clojure HTTP server to 8.63MB Docker image
 that starts pretty much instantly.
 
