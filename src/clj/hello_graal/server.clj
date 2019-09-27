@@ -3,13 +3,11 @@
   (:gen-class))
 
 
-(defn handler [request]
+(defn handler [req]
   {:status  200
    :headers {"content-type" "text/plain"}
-   :body    "hello!"})
+   :body    "Hello!\n"})
 
 
 (defn -main [& args]
-  (println "Server staring...")
-  (server/run-server handler {:port 8080})
-  (println "Server ready!"))
+  (server/run-server handler {:port 8080}))

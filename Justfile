@@ -9,4 +9,4 @@ build:
 
 # Run server container
 run:
-  docker run --rm -p 7000:8080 hello-graal
+  docker run --rm -i -p 8080:8080 hello-graal
