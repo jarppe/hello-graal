@@ -1,0 +1,4 @@
+FROM jarppe/hello-graal:latest AS base
+FROM debian:10-slim
+COPY --from=base /hello_graal_server /hello_graal_server
+CMD ["bash"]
