@@ -1,7 +1,6 @@
 (ns hello-graal.server
   (:require [org.httpkit.server :as server])
-  (:import (java.time LocalDateTime)
-           (java.time.format DateTimeFormatter))
+  (:import (java.time LocalDateTime))
   (:gen-class))
 
 
@@ -12,7 +11,7 @@
 
 
 (defn log [message]
-  (->> (str (.format DateTimeFormatter/ISO_LOCAL_DATE_TIME (LocalDateTime/now)) " : " message)
+  (->> (str (LocalDateTime/now) " : " message)
        (.println System/err)))
 
 
@@ -20,7 +19,3 @@
   (log "server starting...")
   (server/run-server handler {:port 8080})
   (log "server ready"))
-
-
-(comment
-  (-main []))
