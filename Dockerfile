@@ -30,12 +30,19 @@ COPY src/ /app/src/
 # NOTE: This should not need --initialize-at-build-time and -H:+ReportUnsupportedElementsAtRuntime flags,
 #       but for now they are required. See https://github.com/oracle/graal/issues/1266 and
 RUN mkdir classes && \
-    clojure -J-Dclojure.compiler.direct-linking=true -e "(compile 'hello-graal.server)" && \
+    clojure \
+      -J-Dclojure.compiler.direct-linking=true \
+      -J-Dclojure.spec.skip-macros=true \
+      -e "(compile 'hello-graal.server)" && \
     native-image \
-      --no-fallback \
+      -J-Dclojure.compiler.direct-linking=true \
+      -J-Dclojure.spec.skip-macros=true \
       --initialize-at-build-time \
+      --initialize-at-run-time=java.lang.Math\$RandomNumberGeneratorHolder \
+      --no-fallback \
       --static \
       --enable-http \
+      --no-server \
       -H:+ReportUnsupportedElementsAtRuntime \
       -H:+ReportExceptionStackTraces \
       -cp ./classes:$(clojure -Spath) \
