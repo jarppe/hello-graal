@@ -59,4 +59,5 @@ FROM scratch
 COPY --from=build /tini /tini
 COPY --from=build /app/hello_graal.server /hello_graal_server
 
-CMD ["/tini", "-g", "-e", "143", "--", "/hello_graal_server"]
+ENTRYPOINT ["/tini", "-g", "-e", "143", "--"]
+CMD ["/hello_graal_server"]
