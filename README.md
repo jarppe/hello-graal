@@ -1,84 +1,55 @@
-# Simple Clojure HTTP server in 9MB docker image with GraalVM
+# Simple Clojure HTTP server in 36.6MB docker image with GraalVM
 
-This branch uses immutant. Unfortunately the native-image creation fails on out-of-memory error.
+This repo is mainly just a documentation for my self on how to 
+use [GraalVM](https://www.graalvm.org) to package a 
+[Clojure](https://clojure.org/) app as 
+[native image](https://www.graalvm.org/reference-manual/native-image/).
 
-Demonstration on how to package a simple Clojure HTTP server to 9MB Docker image
-that starts pretty fast.
 
-Docker container starts under 700ms:
+## Setup
+
+For simplicity all work is done in [Docker](https://docker.com/) containers.
+
+The image size is 36.6MB and it starts in about 300ms:
 
 ```bash
 $ docker pull jarppe/hello-graal:latest
 $ echo $(date +%Y-%m-%dT%T.%N) ": starting server" ; docker run --rm jarppe/hello-graal:latest
-2019-09-28T10:12:00.282285800 : starting server
-2019-09-28T10:12:00.969 : server starting...
-2019-09-28T10:12:00.969 : server ready
+2021-09-10T09:10:34.074616357 : starting server
+2021-09-10T09:10:34.390173 : server starting...
+2021-09-10T09:10:34.391045 : server ready
 ```
 
-The native image itself starts in 2ms. 
+The native image itself is 18MB and starts in about 3ms. 
 
 ```bash
-$ echo $(date +%Y-%m-%dT%T.%N) ": starting server" ; /hello_graal_server 
-2019-09-28T09:30:16.381392000 : starting server
-2019-09-28T09:30:16.382 : server starting...
-2019-09-28T09:30:16.383 : server ready
+$ echo $(date +%Y-%m-%dT%T.%N) ": starting server" ; ./app 
+2021-09-10T09:59:01.252101422 : starting server
+2021-09-10T09:59:01.255403 : server starting...
+2021-09-10T09:59:01.255925 : server ready
 ``` 
 
-The above was tested 
+The above was tested in [GCP](https://cloud.google.com/) 
+[c2-standard-4](https://cloud.google.com/compute/docs/compute-optimized-machines#c2_vms) instance
+with 4 Intel Cascade Lake CPU and 16GB RAM.
 
 
 ## Build
 
 ```bash
-docker build -t hello-graal .
+just build-base
+just build
 ```
 
 
 ## Run
 
 ```bash
-docker run --rm -p 8080:8080 hello-graal
-```
-
-
-## Test
-
-```bash
-curl http://localhost:8080/
-```
-
-## Bonus, test the native image with more tooling
-
-The image `jarppe/hello-graal:latest` contains just the `tini` and `hello_graal_server`
-binaries, nothing else. If you would like to play around with the native image in a
-container with more tools, you can create a new image with the `hello_graal_server`.
-
-The `Dockerfile-test` does just that.
-
-```dockerfile
-FROM jarppe/hello-graal:latest AS base
-FROM debian:10-slim
-COPY --from=base /hello_graal_server /hello_graal_server
-CMD ["bash"]
-```
-
-Build and run it:
-
-```bash
-$ docker build -t hello-graal-test -f Dockerfile-test .
-$ docker run --rm -it hello-graal-test
-root@e0e5a275ea24:/# PS1="$ "
-$ ls -l /hello_graal_server
--rwxr-xr-x 1 root root 8146160 Sep 28 10:23 /hello_graal_server
-$ echo $(date +%Y-%m-%dT%T.%N) ": starting server" ; /hello_graal_server 
-2019-09-28T10:47:18.055150800 : starting server
-2019-09-28T10:47:18.057 : server starting...
-2019-09-28T10:47:18.057 : server ready
-^C
-$ 
+just run
 ```
 
 
 # License
 
-Copyright © 2019 Jarppe Länsiö
+Copyright © 2019-2021 Jarppe Länsiö
+Available under the terms of the Eclipse Public License 2.0

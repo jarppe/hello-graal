@@ -1,5 +1,10 @@
-{:paths   ["src/clj" "resources"]
- :deps    {org.clojure/clojure {:mvn/version "1.10.1"}
-           http-kit            {:mvn/version "2.3.0"}}
- :aliases {:dev {:extra-paths ["src/dev"]
-                 :extra-deps  {org.clojure/tools.namespace {:mvn/version "0.3.0-alpha4"}}}}}
+{:paths   ["src/clj"]
+ :deps    {org.clojure/clojure {:mvn/version "1.10.3"}
+           http-kit/http-kit   {:mvn/version "2.5.3"}}
+ :aliases {:uberjar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.297"}}
+                     :exec-fn hf.depstar/uberjar
+                     :exec-args  {:aot        true
+                                  :compile-ns [hello-graal.server]
+                                  :main-class "hello-graal.server"}
+                     :jvm-opts   ["-Dclojure.compiler.direct-linking=true"
+                                  "-Dclojure.spec.skip-macros=true"]}}}
